@@ -1,0 +1,197 @@
+<div class="body">
+
+<mat-card>
+
+    <br/>
+    <mat-card-title>AGENDA</mat-card-title>
+    <br/>
+
+    <form #myForm="ngForm" (ngSubmit)="addUser(myForm)">
+
+        <mat-form-field appearance="standard">
+
+            <mat-label>Nombre</mat-label>
+            
+            <input 
+                type="text"
+                name="nombre"
+                class="form-control"
+                matInput
+                required 
+                placeholder="Nombre"
+                minlength="3"
+                [(ngModel)]="usuarioActual.nombre"
+                #nombre="ngModel">
+            
+                <div  class="validador" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                    <div  *ngIf="nombre.errors?.required">Campo requerido.</div>
+                    <div  *ngIf="nombre.errors?.minlength">Al menos 3 caracteres.</div>
+                </div>
+
+        </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+        <mat-form-field appearance="standard">
+
+            <mat-label>Apellidos</mat-label>
+
+            <input 
+                type="text"
+                name="apellidos"
+                class="form-control"
+                matInput
+                required 
+                placeholder="Apellidos"
+                minlength="3"
+                [(ngModel)]="usuarioActual.apellidos"
+                #apellidos="ngModel">
+
+            <div  class="validador" *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)">
+                <div  *ngIf="apellidos.errors?.required">Campo requerido.</div>
+                <div  *ngIf="apellidos.errors?.minlength">Al menos 3 caracteres.</div>
+            </div>
+
+        </mat-form-field><br/>
+
+
+        <mat-form-field appearance="standard">
+
+            <mat-label>Edad</mat-label>
+
+            <input 
+                type="text"
+                name="edad"
+                class="form-control"
+                matInput
+                required 
+                placeholder="Edad"
+                pattern="[0-9]{1,3}"
+                maxlength="3"
+                [(ngModel)]="usuarioActual.edad"
+                #edad="ngModel">
+
+            <div  class="validador" *ngIf="edad.invalid && (edad.dirty || edad.touched)">
+                <div  *ngIf="edad.errors?.required">Campo requerido.</div>
+                <div  *ngIf="edad.errors?.pattern">Carácter no válido.</div>                
+            </div>
+
+        </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+
+
+        <mat-form-field color="primary">
+
+            <mat-label>Fecha de nacimiento</mat-label>
+
+            <input matInput
+                type = "text"
+                name="fechaNacimiento"
+                class="form-control"
+                readonly
+                [matDatepicker]="picker"  
+                placeholder="dd/mm/aaaa" 
+                [(ngModel)]="usuarioActual.fechaNacimiento"
+                #fechaNacimiento ="ngModel">
+
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+            
+        </mat-form-field><br/>
+
+
+        <mat-form-field appearance="standard">
+
+            <mat-label>DNI</mat-label>
+
+            <input 
+                type="text"
+                name="dni"
+                class="form-control"
+                matInput
+                placeholder="DNI"
+                pattern="[0-9]{8}[A-Z]{1}" 
+                [(ngModel)]="usuarioActual.dni"
+                #dni="ngModel">
+
+            <div  class="validador" *ngIf="dni.invalid && (dni.dirty || dni.touched)">
+                <div  *ngIf="dni.errors?.pattern">Documento no válido.</div>                
+            </div>
+
+        </mat-form-field> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+
+        <mat-form-field appearance="standard">
+
+            <mat-label>Color Favorito</mat-label>
+
+            <input 
+                type="text"
+                name="colorFavorito"
+                class="form-control"
+                matInput
+                required 
+                placeholder="Color Favorito"
+                minlength="3" 
+                [(ngModel)]="usuarioActual.colorFavorito"
+                #colorFavorito="ngModel">
+
+            <div  class="validador" *ngIf="colorFavorito.invalid && (colorFavorito.dirty || colorFavorito.touched)">
+                <div  *ngIf="colorFavorito.errors?.required">Campo requerido.</div>
+                <div  *ngIf="colorFavorito.errors?.minlength">Al menos 3 caracteres.</div>
+            </div>
+
+        </mat-form-field><br/><br/>
+
+
+        <mat-radio-group aria-label="Selección de sexo"
+        name="sexo"
+        class="form-control"
+        color="primary" 
+        required
+        [(ngModel)]="usuarioActual.sexo"
+        #sexo="ngModel">
+
+            <mat-radio-button value="Mujer">Mujer</mat-radio-button>&nbsp;&nbsp;&nbsp;
+            <mat-radio-button value="Hombre">Hombre</mat-radio-button>&nbsp;&nbsp;&nbsp;
+            <mat-radio-button value="Otro">Otro</mat-radio-button>&nbsp;&nbsp;&nbsp;
+            <mat-radio-button value="No especificado">No especificado</mat-radio-button>
+
+            <div  class="validador" *ngIf="sexo.invalid && (sexo.dirty || sexo.touched)">
+                <div  *ngIf="sexo.errors?.required">Campo requerido.</div>
+            </div>
+        </mat-radio-group><br/><br/><br/>
+
+        <button type="submit" [disabled]="!myForm.valid" mat-raised-button>Registrar</button>
+    </form>
+
+</mat-card><br/><br/> 
+
+
+<mat-icon aria-hidden="false" aria-label="perm_contact_calendar">perm_contact_calendar</mat-icon>
+<mat-card-subtitle>LISTÍN DE CONTACTOS</mat-card-subtitle>
+
+<table matSort>
+    <tr>
+        <th mat-sort-header="nombre">Nombre</th>
+        <th mat-sort-header="edad">Edad</th>
+        <th mat-sort-header="dni">DNI</th>
+        <th mat-sort-header="cumple">Cumpleaños</th>
+        <th mat-sort-header="color">Color Favorito</th>
+        <th mat-sort-header="sexo">Sexo</th>
+    </tr>
+
+    <tr *ngFor="let cadaUsuario of usuarios; let i= index">
+        <td>{{cadaUsuario.nombre}} {{cadaUsuario.apellidos}}</td>
+        <td>{{cadaUsuario.edad}}</td>
+        <td>{{cadaUsuario.dni}}</td>
+        <td>{{cadaUsuario.fechaNacimiento | customDate}}</td>
+        <td>{{cadaUsuario.colorFavorito}}</td>
+        <td>{{cadaUsuario.sexo}}</td>&nbsp;&nbsp;&nbsp;
+
+        <!-- botones que permiten modificar y borrar los registros -->
+        <button (click)="getUserById(i)" mat-stroked-button>Actualizar</button>
+        <button (click)="deleteUser(i)" mat-stroked-button>Eliminar</button>
+    </tr>
+</table>
+
+
+</div>
